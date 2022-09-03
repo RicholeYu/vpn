@@ -2,10 +2,9 @@ version: '2'
 
 services:
   strongswan:
-    restart: "always"
-    network_mode: "host"
-    container_name: philplckthun/strongswan
     image: philplckthun/strongswan
+    container_name: strongswan
+    restart: "always"
     volumes:
       - "./ipsec.conf:/etc/ipsec.conf"
       - "./ipsec.secrets:/etc/ipsec.secrets"
@@ -14,15 +13,15 @@ services:
       - VPN_PASSWORD=yu
       - VPN_PSK=123
     ports:
-      - "500:500"
-      - "4500:4500"
-      - "1701:1701"
+      - "500:500/udp"
+      - "4500:4500/udp"
+      - "1701:1701/udp"
     privileged: true
 
   dante:
-    container_name: wernight/dante
-    image: dante
+    image: wernight/dante
+    container_name: dante
     restart: "always"
-    network_mode: "host"
+    network_mode: "bridge"
     ports:
       - "9999:1080"
