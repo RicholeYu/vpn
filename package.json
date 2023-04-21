@@ -1,0 +1,19 @@
+{
+  "name": "vpn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nohup node index.js > /dev/null &"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RicholeYu/VPN.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RicholeYu/VPN/issues"
+  },
+  "homepage": "https://github.com/RicholeYu/VPN#readme"
+}
