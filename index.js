@@ -10,10 +10,12 @@ iptables(commandDropHTTP)
 iptables(commandDropVPN)
 
 http.createServer((req, res) => {
-  const ip = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress)?.[0]
+  const ipPath = req.url.split('ip/')[1]
+  const ip = ipPath || /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress)?.[0]
   const commandHTTP = `-I FORWARD -p tcp --dport 1080 -s ${ip} -j ACCEPT`
   const commandVPNOUT = `-I FORWARD -p udp --dport 500 -d ${ip} -j ACCEPT`
   const commandVPNIN = `-I FORWARD -p udp --dport 500 -s ${ip} -j ACCEPT`
+  console.log(ip, ipPath)
 
   if (cache[ip]) {
     return res.end(`${ip} is already in whiteList`)
