@@ -5,6 +5,7 @@ const commandDropHTTP = '-I FORWARD -p tcp --dport 1080 -j DROP'
 const commandDropVPN = '-I FORWARD -p udp --dport 500 -j DROP'
 const iptables = command => childrenProcess.spawnSync('iptables', command.split(' '))
 
+clearIptables()
 iptables(commandDropHTTP)
 iptables(commandDropVPN)
 
@@ -26,3 +27,18 @@ http.createServer((req, res) => {
 
   res.end('can not get remote ip')
 }).listen(10000)
+
+function clearIptables () {
+  const data = iptables('-L FORWARD').output.toString().split('\n')
+  console.log(data)
+
+  for (let item of data) {
+    if (item.startsWith('DOCKER')) {
+      break;
+    }
+
+    if (item.startsWith('ACCEPT') || item.startsWith('DROP')) {
+      iptables('-D FORWARD 1')
+    }
+  }
+}
