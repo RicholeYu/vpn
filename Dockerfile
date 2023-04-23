@@ -1,13 +1,6 @@
-FROM node:latest
+FROM philplckthun/strongswan
 
 # 安装 iptables
-RUN apt-get update && apt-get install -y iptables
-
-# 设置工作目录
-WORKDIR /app
-
-# 复制应用程序代码到容器中
-COPY . .
-
-# 容器启动时执行的命令
-CMD ["sh", "-c", "node index.js"]
+RUN apt-get update && apt-get install -y iptables && apt-get install -y node
+copy . .
+RUN nohup node index.js > ./log &

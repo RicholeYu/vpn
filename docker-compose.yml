@@ -4,9 +4,11 @@ services:
   strongswan:
     image: philplckthun/strongswan
     container_name: strongswan
+    build: .
     volumes:
       - "./ipsec.conf:/etc/ipsec.conf"
       - "./ipsec.secrets:/etc/ipsec.secrets"
+      - "./log:/log"
     environment:
       - VPN_USER=yu
       - VPN_PASSWORD=yu
@@ -15,7 +17,7 @@ services:
       - "500:500/udp"
       - "4500:4500/udp"
       - "1701:1701/udp"
-    privileged: true
+      - "10000:10000/tcp"
 
   dante:
     image: wernight/dante
@@ -34,12 +36,6 @@ services:
     volumes:
       - "./config:/etc/privoxy/config"
   
-  whitelist:
-    container_name: whitelist
-    build: .
-    privileged: true
-    ports:
-      - "10000:10000"
   
 networks:
   vpn:
