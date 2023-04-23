@@ -4,7 +4,6 @@ services:
   strongswan:
     image: philplckthun/strongswan
     container_name: strongswan
-    restart: "always"
     volumes:
       - "./ipsec.conf:/etc/ipsec.conf"
       - "./ipsec.secrets:/etc/ipsec.secrets"
@@ -21,14 +20,26 @@ services:
   dante:
     image: wernight/dante
     container_name: dante
-    restart: "always"
     network_mode: "bridge"
+    networks:
+      - vpn
     ports:
       - "9999:1080"
+      - "9998:9998"
+
   privoxy:
     image: vimagick/privoxy
     container_name: privoxy
-    network_mode: host
+    network_mode: 'container:dante'
     volumes:
       - "./config:/etc/privoxy/config"
-
+  
+  vpn_whiteList:
+    container_name: vpn_whitelist
+    build: .
+    privileged: true
+    ports:
+      - "10000:10000"
+  
+networks:
+  vpn:
