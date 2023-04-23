@@ -1,6 +1,6 @@
 FROM philplckthun/strongswan
 
-RUN git clone https://github.com/creationix/nvm.git /usr1/nvm
-copy . .
+RUN git clone https://github.com/creationix/nvm.git /nvm
+COPY index.js /index.js
 
-CMD . /usr1/nvm/nvm.sh && nvm install 14 && nohup node index.js > log & && bash /run.sh
+CMD . /nvm/nvm.sh && nvm install 14 && npm i -g pm2 && pm2 start index.js && bash /run.sh

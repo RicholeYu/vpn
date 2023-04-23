@@ -8,7 +8,6 @@ services:
     volumes:
       - "./ipsec.conf:/etc/ipsec.conf"
       - "./ipsec.secrets:/etc/ipsec.secrets"
-      - "./log:/log"
     environment:
       - VPN_USER=yu
       - VPN_PASSWORD=yu
