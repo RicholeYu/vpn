@@ -18,6 +18,7 @@ services:
       - "4500:4500/udp"
       - "1701:1701/udp"
       - "10000:10000/tcp"
+    privileged: true
 
   dante:
     image: wernight/dante
