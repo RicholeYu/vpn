@@ -10,4 +10,4 @@ WORKDIR /app
 COPY . .
 
 # 容器启动时执行的命令
-CMD ["sh", "-c", "iptables && node index.js"]
+CMD ["sh", "-c", "node index.js"]
