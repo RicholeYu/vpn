@@ -34,8 +34,8 @@ services:
     volumes:
       - "./config:/etc/privoxy/config"
   
-  vpn_whiteList:
-    container_name: vpn_whitelist
+  whitelist:
+    container_name: whitelist
     build: .
     privileged: true
     ports:
