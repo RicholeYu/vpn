@@ -9,6 +9,8 @@ services:
       - "./ipsec.conf:/etc/ipsec.conf"
       - "./ipsec.secrets:/etc/ipsec.secrets"
       - "./index.js:/index.js"
+    networks:
+      - vpn
     environment:
       - PATH=$PATH:/bin/versions/node/v14.21.3/bin
       - VPN_USER=yu
@@ -20,13 +22,14 @@ services:
       - "1701:1701/udp"
       - "10000:10000/tcp"
       - "9999:1080"
-      - "9998:9998"
     privileged: true
 
   dante:
     image: wernight/dante
     depends_on: 
       - strongswan
+    networks:
+      - vpn
     network_mode: "container:strongswan"
     privileged: true
 
@@ -35,8 +38,12 @@ services:
     container_name: privoxy
     depends_on: 
       - dante
-    network_mode: "container:strongswan"
+    networks:
+      - vpn
+    ports:
+      - "9998:9998"
     volumes:
       - "./config:/etc/privoxy/config"
   
-  
+networks:
+  vpn: 

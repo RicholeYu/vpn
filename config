@@ -1440,7 +1440,7 @@ enable-proxy-authentication-forwarding 0
 #      To connect SOCKS5 proxy which requires username/password
 #      authentication:
 #
-        forward-socks5   /               127.0.0.1:9999  .
+        forward-socks5   /               strongswan:1080  .
 #
 #      To chain Privoxy and Tor, both running on the same system, you
 #      would use something like:

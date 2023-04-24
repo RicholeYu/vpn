@@ -4,11 +4,13 @@ const cache = {}
 const commandClear = "-F INPUT"
 const commandDropHTTP = '-I INPUT -p tcp --dport 1080 -j DROP'
 const commandDropVPN = '-I INPUT -p udp --dport 500 -j DROP'
+const commandPrivoxy = '-I INPUT -p tcp --dport 1080 -s privoxy -j ACCEPT'
 const iptables = command => childrenProcess.spawnSync('iptables', command.split(' '))
 
 iptables(commandClear)
 iptables(commandDropHTTP)
 iptables(commandDropVPN)
+iptables(commandPrivoxy)
 
 http.createServer((req, res) => {
   const ipPath = req.url.split('ip/')[1]
