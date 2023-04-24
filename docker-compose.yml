@@ -23,7 +23,7 @@ services:
       - "10000:10000/tcp"
       - "9999:1080"
     privileged: true
-
+    restart: "always"
   dante:
     image: wernight/dante
     depends_on: 
@@ -32,6 +32,7 @@ services:
       - vpn
     network_mode: "container:strongswan"
     privileged: true
+    restart: "always"
 
   privoxy:
     image: vimagick/privoxy
@@ -44,6 +45,7 @@ services:
       - "9998:9998"
     volumes:
       - "./config:/etc/privoxy/config"
+    restart: "always"
   
 networks:
   vpn: 
