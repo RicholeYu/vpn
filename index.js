@@ -1,18 +1,20 @@
 const http = require('http')
 const childrenProcess = require('child_process')
 const cache = {}
-// const commandDropHTTP = '-I INPUT -p tcp --dport 1080 -j DROP'
+const commandClear = "-F INPUT"
+const commandDropHTTP = '-I INPUT -p tcp --dport 1080 -j DROP'
 const commandDropVPN = '-I INPUT -p udp --dport 500 -j DROP'
 const iptables = command => childrenProcess.spawnSync('iptables', command.split(' '))
 
-clearIptables()
+iptables(commandClear)
 iptables(commandDropHTTP)
 iptables(commandDropVPN)
 
 http.createServer((req, res) => {
   const ipPath = req.url.split('ip/')[1]
-  const ip = ipPath || /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress)?.[0]
-  // const commandHTTP = `-I INPUT -p tcp --dport 1080 -s ${ip} -j ACCEPT`
+  const match = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress) || []
+  const ip = ipPath || match[1]
+  const commandHTTP = `-I INPUT -p tcp --dport 1080 -s ${ip} -j ACCEPT`
   const commandVPNOUT = `-I INPUT -p udp --dport 500 -d ${ip} -j ACCEPT`
   const commandVPNIN = `-I INPUT -p udp --dport 500 -s ${ip} -j ACCEPT`
   console.log(ip, ipPath)
@@ -21,7 +23,7 @@ http.createServer((req, res) => {
     return res.end(`${ip} is already in whiteList`)
   } if (ip) {
     cache[ip] = true
-    // iptables(commandHTTP)
+    iptables(commandHTTP)
     iptables(commandVPNIN)
     iptables(commandVPNOUT)
     return res.end(`iptables for ${ip} is set successfully`)
@@ -30,17 +32,3 @@ http.createServer((req, res) => {
   res.end('can not get remote ip')
 }).listen(10000)
 
-function clearIptables () {
-  const data = iptables('-L FORWARD').output.toString().split('\n')
-  console.log(data)
-
-  for (let item of data) {
-    if (item.startsWith('DOCKER')) {
-      break;
-    }
-
-    if (item.startsWith('ACCEPT') || item.startsWith('DROP')) {
-      iptables('-D FORWARD 1')
-    }
-  }
-}
