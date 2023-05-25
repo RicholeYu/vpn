@@ -8,8 +8,7 @@ services:
     volumes:
       - "./ipsec.conf:/etc/ipsec.conf"
       - "./ipsec.secrets:/etc/ipsec.secrets"
-      - "./index.js:/index.js"
-      - "./index.html:/index.html"
+      - ".:/app"
     networks:
       - vpn
     environment:
