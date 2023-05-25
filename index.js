@@ -18,12 +18,12 @@ http.createServer((req, res) => {
   const match = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress) || []
   const ip = ipPath || match[1]
 
-  if (req.url.includes('/go/') || req.url.includes('/has/')) {
+  if (req.url.includes('/go/') || req.url.includes('/has/') || req.url.includes('/set/')) {
     res.setHeader('Content-Type', 'text/html')
     return res.end(fs.readFileSync('./index.html').toString())
   }
 
-  if (req.url.includes('/set/')) {
+  if (req.url.includes('/add/')) {
     const commandHTTP = `-I INPUT -p tcp --dport 1080 -s ${ip} -j ACCEPT`
     const commandVPNOUT = `-I INPUT -p udp --dport 500 -d ${ip} -j ACCEPT`
     const commandVPNIN = `-I INPUT -p udp --dport 500 -s ${ip} -j ACCEPT`
