@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GoGoGo</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #go {
+      padding: 15px 30px;
+      font-size: 20px;
+      border: solid 1px #666;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <button id="go">go</button>
+  <script>
+    const href = location.href;
+    const go = document.getElementById('go');
+    const ip = location.href.split('ip/')[1];
+
+    if (href.includes('/set/')) {
+      go.innerText = `iptables for ${ip} is set successfully`
+    }
+
+    if (href.includes('/has/')) {
+      go.innerText = `${ip} is already in whiteList`
+    }
+
+    if (href.includes('/go/')) {
+      document.getElementById('go').onclick = function () {
+        if (ip) {
+          location.href = `http://vpn.richole.cn/set/ip/${ip}`
+        }
+      }
+    }
+  </script>
+</body>
+</html>
