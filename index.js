@@ -18,15 +18,16 @@ http.createServer((req, res) => {
   const match = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress) || []
   const ip = ipPath || match[1]
 
+  if (req.url.includes('/go/') || req.url.includes('/has/') || req.url.includes('/set/')) {
+    res.setHeader('Content-Type', 'text/html')
+    return res.end(fs.readFileSync('./index.html').toString())
+  }
+
+  console.log(ip, cache[ip])
   if (ip && cache[ip]) {
     res.setHeader('location', `http://vpn.richole.cn/has/ip/${ip}`);
     res.statusCode = 301
     return res.end('')
-  }
-
-  if (req.url.includes('/go/') || req.url.includes('/has/') || req.url.includes('/set/')) {
-    res.setHeader('Content-Type', 'text/html')
-    return res.end(fs.readFileSync('./index.html').toString())
   }
 
   if (req.url.includes('/add/')) {
