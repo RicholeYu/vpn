@@ -30,7 +30,10 @@ http.createServer((req, res) => {
     iptables(commandHTTP)
     iptables(commandVPNOUT)
     iptables(commandVPNIN)
-    return res.end(`iptables for ${ip} is set successfully`)
+
+    res.setHeader('location', `http://vpn.richole.cn/set/ip/${ip}`);
+    res.statusCode = 301
+    return res.end('')
   }
 
   if (cache[ip]) {
