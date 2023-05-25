@@ -23,7 +23,7 @@ http.createServer((req, res) => {
     return res.end(fs.readFileSync('./index.html').toString())
   }
 
-  console.log(ip, cache[ip])
+  console.log(ip)
   if (ip && cache[ip]) {
     res.setHeader('location', `http://vpn.richole.cn/has/ip/${ip}`);
     res.statusCode = 301
@@ -38,6 +38,7 @@ http.createServer((req, res) => {
     iptables(commandVPNOUT)
     iptables(commandVPNIN)
     cache[ip] = true
+    console.log(ip)
 
     res.setHeader('location', `http://vpn.richole.cn/set/ip/${ip}`);
     res.statusCode = 301
