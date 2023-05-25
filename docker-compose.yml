@@ -29,8 +29,6 @@ services:
     image: wernight/dante
     depends_on: 
       - strongswan
-    networks:
-      - vpn
     network_mode: "container:strongswan"
     privileged: true
     restart: "always"
