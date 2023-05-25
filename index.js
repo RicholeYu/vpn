@@ -35,12 +35,14 @@ http.createServer((req, res) => {
 
   if (cache[ip]) {
     res.setHeader('location', `http://vpn.richole.cn/has/ip/${ip}`);
-    return res.status(301).send()
+    res.statusCode = 301
+    return res.end('')
   }
 
   if (ip) {
     res.setHeader('location', `http://vpn.richole.cn/go/ip/${ip}`);
-    return res.status(301).send()
+    res.statusCode = 301
+    return res.end('')
   }
 
   res.end('can not get remote ip')
