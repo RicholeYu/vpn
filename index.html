@@ -38,7 +38,8 @@
     }
 
     if (href.includes('/go/')) {
-      document.getElementById('go').onclick = function () {
+      go.innerText = 'Go'
+      go.onclick = function () {
         if (ip) {
           location.href = `http://vpn.richole.cn/set/ip/${ip}`
         }
