@@ -18,12 +18,15 @@ http.createServer((req, res) => {
   const match = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(req.socket.remoteAddress) || []
   const ip = ipPath || match[1]
 
+  if (req.url.includes('favicon')) {
+    return res.end('')
+  }
+
   if (req.url.includes('/go/') || req.url.includes('/has/') || req.url.includes('/set/')) {
     res.setHeader('Content-Type', 'text/html')
     return res.end(fs.readFileSync('./index.html').toString())
   }
 
-  console.log(ip)
   if (ip && cache[ip]) {
     res.setHeader('location', `http://vpn.richole.cn/has/ip/${ip}`);
     res.statusCode = 301
@@ -35,8 +38,8 @@ http.createServer((req, res) => {
     const commandVPNOUT = `-I INPUT -p udp --dport 500 -d ${ip} -j ACCEPT`
     const commandVPNIN = `-I INPUT -p udp --dport 500 -s ${ip} -j ACCEPT`
     iptables(commandHTTP)
-    iptables(commandVPNOUT)
     iptables(commandVPNIN)
+    iptables(commandVPNOUT)
     cache[ip] = true
     console.log(ip)
 
