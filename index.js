@@ -20,7 +20,7 @@ http.createServer((req, res) => {
 
   if (req.url.includes('/go/') || req.url.includes('/has/')) {
     res.setHeader('Content-Type', 'text/html')
-    returnres.end(fs.readFileSync('./index.html').toString())
+    return res.end(fs.readFileSync('./index.html').toString())
   }
 
   if (req.url.includes('/set/')) {
@@ -34,12 +34,12 @@ http.createServer((req, res) => {
   }
 
   if (cache[ip]) {
-    res.set('location', `http://vpn.richole.cn/has/ip/${ip}`);
+    res.setHeader('location', `http://vpn.richole.cn/has/ip/${ip}`);
     return res.status(301).send()
   }
 
   if (ip) {
-    res.set('location', `http://vpn.richole.cn/go/ip/${ip}`);
+    res.setHeader('location', `http://vpn.richole.cn/go/ip/${ip}`);
     return res.status(301).send()
   }
 
