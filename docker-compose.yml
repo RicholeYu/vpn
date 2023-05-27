@@ -45,14 +45,14 @@ services:
       - "./config:/etc/privoxy/config"
     restart: "always"
 
-  # nginx:
-  #   restart: "always"
-  #   image: nginx
-  #   container_name: nginx
-  #   network_mode: host
-  #   volumes:
-  #     - "./certs:/certs"
-  #     - "./conf.d/default.conf:/etc/nginx/conf.d/default.conf"
-  #     - "/root/richoleyu.github.io/public:/html"
+  nginx:
+    restart: "always"
+    image: nginx
+    container_name: nginx
+    network_mode: host
+    volumes:
+      - "./certs:/certs"
+      - "./conf.d/default.conf:/etc/nginx/conf.d/default.conf"
+      - "/root/richoleyu.github.io/public:/html"
 networks:
   vpn:
