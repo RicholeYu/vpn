@@ -1,14 +1,13 @@
 FROM node AS builder
-COPY . /app1
-WORKDIR /app1/go
-RUN npm install && npm run build
-WORKDIR /app1/server
-RUN npm install && npm run build
+RUN rm -rf /builder
+COPY . /builder
+RUN cd /builder/go && yarn && yarn build
+RUN cd /builder/server && yarn && yarn build
 
-FROM philplckthun/strongswan
-COPY . /app
-COPY --from=builder /app1/go/dist /app/go/dist
-COPY --from=builder /app1/server/dist /app/server/dist
+FROM philplckthun/strongswan AS base
+RUN rm -rf /app /go /server
+COPY --from=builder /builder/go /go
+COPY --from=builder /builder/server /server
 RUN rm -rf /nvm && git clone https://github.com/creationix/nvm.git /nvm
 RUN . /nvm/nvm.sh && nvm install 14 && npm i -g pm2
-CMD pm2 start /app/server/dist/main.js && bash /run.sh
+CMD pm2 start /server/dist/main.js && bash /run.sh
