@@ -8,7 +8,7 @@ const App: Component = () => {
   const isHas = href.includes('/has/')
   const isError = href.includes('/error/')
 
-  const ip = (/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(href) || [])[1]
+  const ip = (/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/.exec(href) || [])[0]
   const [message, setMessage] = createSignal("Go");
 
   onMount(() => {
