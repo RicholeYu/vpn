@@ -1,4 +1,12 @@
-import { Controller, Get, Headers, Logger, Param, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Headers,
+  Logger,
+  Param,
+  RequestMethod,
+  Res,
+} from '@nestjs/common';
 import { spawnSync } from 'child_process';
 import { Response } from 'express';
 
@@ -28,11 +36,12 @@ export class AppController {
     spawnSync('iptables', command.split(' '));
   }
 
-  @Get('*')
+  @Get('')
   handle(
     @Headers('remote_addr') remoteAddress: string,
     @Res() response: Response,
   ) {
+    console.log(remoteAddress);
     if (this.cache[remoteAddress]) {
       return response.redirect(
         301,
